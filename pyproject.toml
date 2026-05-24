@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llm-budget-window"
+version = "0.1.0"
+description = "Time-windowed USD/token budget for LLM calls. Enforce per-minute, per-hour, and per-day spending caps simultaneously. Thread-safe. Zero dependencies. Python port of llm-budget-window (Rust crate)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Mukunda Rao Katta", email = "mukunda.vjcs6@gmail.com" }]
+keywords = [
+  "llm",
+  "agents",
+  "budget",
+  "rate-limit",
+  "cost",
+  "token-budget",
+  "ai",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[project.urls]
+Homepage = "https://github.com/MukundaKatta/llm-budget-window-py"
+Issues = "https://github.com/MukundaKatta/llm-budget-window-py/issues"
+Source = "https://github.com/MukundaKatta/llm-budget-window-py"
+"Rust sibling" = "https://github.com/MukundaKatta/llm-budget-window"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llm_budget_window"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/README.md", "/LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "UP", "I"]
