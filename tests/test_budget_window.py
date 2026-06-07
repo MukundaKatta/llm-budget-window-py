@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import threading
+import typing
 
 import pytest
 
@@ -76,6 +77,46 @@ def test_exception_message_contains_window_name():
         cap_usd=2.00,
     )
     assert "hour" in str(exc).lower()
+
+
+def test_exception_message_reports_token_kind():
+    exc = WindowBudgetExceeded(
+        window=Window.MINUTE,
+        spent_usd=0.0,
+        requested_usd=0.0,
+        cap_usd=10.0,
+        spent_tokens=999,
+        requested_tokens=2,
+        cap_tokens=1000,
+    )
+    assert "tokens" in str(exc).lower()
+
+
+def test_exception_message_reports_usd_kind():
+    exc = WindowBudgetExceeded(
+        window=Window.MINUTE,
+        spent_usd=0.09,
+        requested_usd=0.02,
+        cap_usd=0.10,
+    )
+    assert "usd" in str(exc).lower()
+
+
+# ---------------------------------------------------------------------------
+# Type-hint introspection (regression: Callable must be importable)
+# ---------------------------------------------------------------------------
+
+
+def test_type_hints_resolve_on_single_window_budget():
+    # Regression for a missing ``Callable`` import: resolving the runtime
+    # annotations must not raise NameError.
+    hints = typing.get_type_hints(SingleWindowBudget.__init__)
+    assert "clock" in hints
+
+
+def test_type_hints_resolve_on_multi_window_budget():
+    hints = typing.get_type_hints(MultiWindowBudget)
+    assert "clock" in hints
 
 
 # ---------------------------------------------------------------------------

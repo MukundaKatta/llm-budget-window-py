@@ -5,6 +5,7 @@ from __future__ import annotations
 import threading
 import time
 from collections import deque
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import NamedTuple
@@ -133,7 +134,7 @@ class SingleWindowBudget:
         self,
         config: WindowBudget,
         *,
-        clock: Callable[[], float] | None = None,  # noqa: F821
+        clock: Callable[[], float] | None = None,
     ) -> None:
         self._config = config
         self._clock = clock or time.monotonic
@@ -259,12 +260,11 @@ class MultiWindowBudget:
     """
 
     budgets: list[WindowBudget]
-    clock: Callable[[], float] | None = field(default=None, repr=False)  # noqa: F821
+    clock: Callable[[], float] | None = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         self._windows: list[SingleWindowBudget] = [
-            SingleWindowBudget(cfg, clock=self.clock)
-            for cfg in self.budgets
+            SingleWindowBudget(cfg, clock=self.clock) for cfg in self.budgets
         ]
 
     def record(self, *, usd: float, tokens: int = 0) -> None:

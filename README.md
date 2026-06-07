@@ -102,7 +102,7 @@ pip install -e ".[dev]"
 pytest tests/ -v
 ```
 
-35 tests. Covers sliding-window expiry, token caps, thread safety, multi-window enforcement, `WindowSnapshot`, and `reset()`.
+30 tests. Covers sliding-window expiry, token caps, thread safety, multi-window enforcement, `WindowSnapshot`, `reset()`, and type-hint resolution.
 
 ## License
 
